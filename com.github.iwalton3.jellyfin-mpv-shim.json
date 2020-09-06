@@ -324,11 +324,23 @@
     {
       "name": "jellyfin-mpv-shim",
       "buildsystem": "simple",
+      "sources":[
+        {
+          "type": "file",
+          "path": "mpv-shim.patch"
+        },
+        {
+          "type": "file",
+          "path": "pystray.patch"
+        }
+      ],
       "build-commands": [
         "mkdir -p /app/share/icons/hicolor/{16x16,32x32,48x48,64x64,128x128,256x256}/apps/ /app/share/{applications,metainfo}/",
         "for s in 16 32 48 64 128 256; do cp ${FLATPAK_DEST}/lib/python*/site-packages/jellyfin_mpv_shim/integration/jellyfin-${s}.png /app/share/icons/hicolor/${s}x${s}/apps/com.github.iwalton3.jellyfin-mpv-shim.png; done",
         "cp ${FLATPAK_DEST}/lib/python*/site-packages/jellyfin_mpv_shim/integration/*.desktop /app/share/applications/",
-        "cp ${FLATPAK_DEST}/lib/python*/site-packages/jellyfin_mpv_shim/integration/*.appdata.xml /app/share/metainfo/"
+        "cp ${FLATPAK_DEST}/lib/python*/site-packages/jellyfin_mpv_shim/integration/*.appdata.xml /app/share/metainfo/",
+        "patch -d ${FLATPAK_DEST}/lib/python*/site-packages/pystray < pystray.patch",
+        "patch -d ${FLATPAK_DEST}/lib/python*/site-packages/jellyfin_mpv_shim < mpv-shim.patch"
       ],
       "modules": [
         "pypi-dependencies.json"
